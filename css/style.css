@@ -213,6 +213,7 @@ path.current-floor,
   cursor: pointer;
 }
 
+.flats .current-flat,
 .flats path:hover {
   opacity: 1;
 }
@@ -242,6 +243,7 @@ path.current-floor,
   text-decoration: none;
 }
 
+.current-flat-link,
 .flat-link:hover {
   color: #3596f5;
   text-decoration: underline;
