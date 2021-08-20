@@ -4,6 +4,10 @@ $(document).ready(function () {
   const counterUp = $(".counter-up"); // кнопка увеличения этажа
   const counterDown = $(".counter-down"); // кнопка уменьшения этажа
 
+  const modal = $(".modal"); // модальное окно
+  const modalCloseButton = $(".modal-close-button"); // кнопка закрытия модального окна
+  const viewFlatsButton = $(".view-flats"); // кнопка "Смотреть квартиры на этаже"
+
   /**
    * Отображаем счетчик этажей и подсвечиваем этаж на изображении
    * @param {integer} currentFloor  текущий этаж
@@ -18,6 +22,13 @@ $(document).ready(function () {
 
     floorPath.removeClass("current-floor"); // удаляем активный класс у этажей
     $(`[data-floor=${usCurrentFloor}]`).toggleClass("current-floor"); // подсвечиваем текущий этаж
+  };
+
+  /**
+   * Переключаем класс для открытия/закрытия модального окна
+   */
+  const toggleModal = function () {
+    modal.toggleClass("is-open");
   };
 
   /**
@@ -52,4 +63,19 @@ $(document).ready(function () {
 
   // Подсвечиваем текущий этаж при загрузке страницы
   showCounter(currentFloor);
+
+  /**
+   * Отслеживаем событие click по этажу на изображении
+   */
+  floorPath.on("click", toggleModal);
+
+  /**
+   * Отслеживаем событие click по кнопке закрытия модального окна
+   */
+  modalCloseButton.on("click", toggleModal);
+
+  /**
+   * Отслеживаем событие click по кнопке "Смотреть квартиры на этаже"
+   */
+  viewFlatsButton.on("click", toggleModal);
 });
