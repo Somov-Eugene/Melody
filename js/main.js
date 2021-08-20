@@ -8,6 +8,10 @@ $(document).ready(function () {
   const modalCloseButton = $(".modal-close-button"); // кнопка закрытия модального окна
   const viewFlatsButton = $(".view-flats"); // кнопка "Смотреть квартиры на этаже"
 
+  let currentFlat = 1; // текущая квартира на этаже
+  const flatsPath = $(".flats path"); // каждая отдельная квартира на этаже в SVG
+  const flatsLink = $(".flat-link"); // ссылки на квартиры на поэтажном плане
+
   /**
    * Отображаем счетчик этажей и подсвечиваем этаж на изображении
    * @param {integer} currentFloor  текущий этаж
@@ -22,6 +26,24 @@ $(document).ready(function () {
 
     floorPath.removeClass("current-floor"); // удаляем активный класс у этажей
     $(`[data-floor=${usCurrentFloor}]`).toggleClass("current-floor"); // подсвечиваем текущий этаж
+  };
+
+  /**
+   * Подсвечиваем квартиру на изображении на поэтажном плане квартир (модальное окно)
+   * @param {integer} currentFlat  текущая квартира
+   */
+  const showFlat = function (currentFlat) {
+    flatsPath.removeClass("current-flat"); // удаляем активный класс у квартир на изображении
+    $(`[data-flat=${currentFlat}]`).toggleClass("current-flat"); // подсвечиваем текущую квартиру
+  };
+
+  /**
+   * Подсвечиваем ссылку на квартиру на поэтажном плане квартир (модальное окно)
+   * @param {integer} currentFlat  текущая квартира
+   */
+  const showFlatLink = function (currentFlat) {
+    flatsLink.removeClass("current-flat-link"); // удаляем активный класс у ссылок на квартиры
+    $(`[data-flat-link=${currentFlat}]`).toggleClass("current-flat-link"); // подсвечиваем текущую ссылку на квартиру
   };
 
   /**
@@ -78,4 +100,36 @@ $(document).ready(function () {
    * Отслеживаем событие click по кнопке "Смотреть квартиры на этаже"
    */
   viewFlatsButton.on("click", toggleModal);
+
+  /**
+   * Подсвечиваем ссылку при наведении мыши на изображении квартиры на поэтажном плане
+   */
+  flatsPath.on("mouseover", function () {
+    // получаем порядковый номер квартиры на изображении (1-10)
+    currentFlat = Number($(this).attr("data-flat"));
+    showFlatLink(currentFlat);
+  });
+
+  /**
+   * Убираем подсветку ссылки при снятии наведения мыши с изображения квартиры на поэтажном плане
+   */
+  flatsPath.on("mouseleave", function () {
+    flatsLink.removeClass("current-flat-link"); // удаляем активный класс у ссылок на квартиры
+  });
+
+  /**
+   * Подсвечиваем квартиру на изображении при наведении мыши на ссылку на поэтажном плане
+   */
+  flatsLink.on("mouseover", function () {
+    // получаем порядковый номер ссылки, указанной курсором мыши (1-10)
+    currentFlat = Number($(this).attr("data-flat-link"));
+    showFlat(currentFlat);
+  });
+
+  /**
+   * Убираем подсветку квартиры на изображении при снятии наведения мыши со ссылки на поэтажном плане
+   */
+  flatsLink.on("mouseleave", function () {
+    flatsPath.removeClass("current-flat"); // удаляем активный класс у квартир на изображении
+  });
 });
